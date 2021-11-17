@@ -1,0 +1,58 @@
+# Bellabeat Case Study
+
+## Collecting the Data
+daily_activity <- read_csv("Bellabeat/Fitabase Data 4.12.16-5.12.16/dailyActivity_merged.csv")
+daily_calories <- read_csv("Bellabeat/Fitabase Data 4.12.16-5.12.16/dailyCalories_merged.csv")
+daily_steps <- read_csv("Bellabeat/Fitabase Data 4.12.16-5.12.16/dailySteps_merged.csv")
+heart_rate <- read_csv("Bellabeat/Fitabase Data 4.12.16-5.12.16/heartrate_seconds_merged.csv")
+hourly_calories <- read_csv("Bellabeat/Fitabase Data 4.12.16-5.12.16/hourlyCalories_merged.csv")
+hourly_intensities <- read_csv("Bellabeat/Fitabase Data 4.12.16-5.12.16/hourlyIntensities_merged.csv")
+hourly_steps <- read_csv("Bellabeat/Fitabase Data 4.12.16-5.12.16/hourlySteps_merged.csv")
+minute_calories_narrow <- read_csv("Bellabeat/Fitabase Data 4.12.16-5.12.16/minuteCaloriesNarrow_merged.csv")
+minute_calories_wide <- read_csv("Bellabeat/Fitabase Data 4.12.16-5.12.16/minuteCaloriesWide_merged.csv")
+minute_intensities_narrow <- read_csv("Bellabeat/Fitabase Data 4.12.16-5.12.16/minuteIntensitiesNarrow_merged.csv")
+minute_intensities_wide <- read_csv("Bellabeat/Fitabase Data 4.12.16-5.12.16/minuteIntensitiesWide_merged.csv")
+minute_mets_narrow <- read_csv("Bellabeat/Fitabase Data 4.12.16-5.12.16/minuteMETsNarrow_merged.csv")
+minute_sleep <- read_csv("Bellabeat/Fitabase Data 4.12.16-5.12.16/minuteSleep_merged.csv")
+minute_steps_narrow <- read_csv("Bellabeat/Fitabase Data 4.12.16-5.12.16/minuteStepsNarrow_merged.csv")
+minute_steps_wide <- read_csv("Bellabeat/Fitabase Data 4.12.16-5.12.16/minuteStepsWide_merged.csv")
+sleep_day <- read_csv("Bellabeat/Fitabase Data 4.12.16-5.12.16/sleepDay_merged.csv")
+
+## Inspecting and Cleaning the Data
+### Daily Activity
+> str(daily_activity)
+spec_tbl_df [940 × 15] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
+ $ Id                      : num [1:940] 1.5e+09 1.5e+09 1.5e+09 1.5e+09 1.5e+09 ...
+ $ ActivityDate            : chr [1:940] "4/12/2016" "4/13/2016" "4/14/2016" "4/15/2016" ...
+ $ TotalSteps              : num [1:940] 13162 10735 10460 9762 12669 ...
+ $ TotalDistance           : num [1:940] 8.5 6.97 6.74 6.28 8.16 ...
+ $ TrackerDistance         : num [1:940] 8.5 6.97 6.74 6.28 8.16 ...
+ $ LoggedActivitiesDistance: num [1:940] 0 0 0 0 0 0 0 0 0 0 ...
+ $ VeryActiveDistance      : num [1:940] 1.88 1.57 2.44 2.14 2.71 ...
+ $ ModeratelyActiveDistance: num [1:940] 0.55 0.69 0.4 1.26 0.41 ...
+ $ LightActiveDistance     : num [1:940] 6.06 4.71 3.91 2.83 5.04 ...
+ $ SedentaryActiveDistance : num [1:940] 0 0 0 0 0 0 0 0 0 0 ...
+ $ VeryActiveMinutes       : num [1:940] 25 21 30 29 36 38 42 50 28 19 ...
+ $ FairlyActiveMinutes     : num [1:940] 13 19 11 34 10 20 16 31 12 8 ...
+ $ LightlyActiveMinutes    : num [1:940] 328 217 181 209 221 164 233 264 205 211 ...
+ $ SedentaryMinutes        : num [1:940] 728 776 1218 726 773 ...
+ $ Calories                : num [1:940] 1985 1797 1776 1745 1863 ...
+ - attr(*, "spec")=
+  .. cols(
+  ..   Id = col_double(),
+  ..   ActivityDate = col_character(),
+  ..   TotalSteps = col_double(),
+  ..   TotalDistance = col_double(),
+  ..   TrackerDistance = col_double(),
+  ..   LoggedActivitiesDistance = col_double(),
+  ..   VeryActiveDistance = col_double(),
+  ..   ModeratelyActiveDistance = col_double(),
+  ..   LightActiveDistance = col_double(),
+  ..   SedentaryActiveDistance = col_double(),
+  ..   VeryActiveMinutes = col_double(),
+  ..   FairlyActiveMinutes = col_double(),
+  ..   LightlyActiveMinutes = col_double(),
+  ..   SedentaryMinutes = col_double(),
+  ..   Calories = col_double()
+  .. )
+ - attr(*, "problems")=<externalptr> 
