@@ -17,7 +17,8 @@ minute_mets_narrow <- read_csv("Bellabeat/Fitabase Data 4.12.16-5.12.16/minuteME
 minute_sleep <- read_csv("Bellabeat/Fitabase Data 4.12.16-5.12.16/minuteSleep_merged.csv")
 minute_steps_narrow <- read_csv("Bellabeat/Fitabase Data 4.12.16-5.12.16/minuteStepsNarrow_merged.csv")
 minute_steps_wide <- read_csv("Bellabeat/Fitabase Data 4.12.16-5.12.16/minuteStepsWide_merged.csv")
-sleep_day <- read_csv("Bellabeat/Fitabase Data 4.12.16-5.12.16/sleepDay_merged.csv")
+sleep_day <- read_csv("Bellabeat/sleepDay_merged.csv")
+weight_loginfo <- read_csv("Bellabeat/weightLogInfo_merged.csv")
 
 ## Inspecting the Data
 
@@ -640,4 +641,169 @@ spec_tbl_df [21,645 × 62] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
   ..   Steps59 = col_double()
   .. )
  - attr(*, "problems")=<externalptr> 
+ 
+ ### Sleep Day
+ > str(sleep_day)
+spec_tbl_df [413 × 5] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
+ $ Id                : num [1:413] 1.5e+09 1.5e+09 1.5e+09 1.5e+09 1.5e+09 ...
+ $ SleepDay          : chr [1:413] "4/12/2016 12:00:00 AM" "4/13/2016 12:00:00 AM" "4/15/2016 12:00:00 AM" "4/16/2016 12:00:00 AM" ...
+ $ TotalSleepRecords : num [1:413] 1 2 1 2 1 1 1 1 1 1 ...
+ $ TotalMinutesAsleep: num [1:413] 327 384 412 340 700 304 360 325 361 430 ...
+ $ TotalTimeInBed    : num [1:413] 346 407 442 367 712 320 377 364 384 449 ...
+ - attr(*, "spec")=
+  .. cols(
+  ..   Id = col_double(),
+  ..   SleepDay = col_character(),
+  ..   TotalSleepRecords = col_double(),
+  ..   TotalMinutesAsleep = col_double(),
+  ..   TotalTimeInBed = col_double()
+  .. )
+ - attr(*, "problems")=<externalptr> 
+ 
+ ### Weight Log Info
+ > str(weight_loginfo)
+spec_tbl_df [67 × 8] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
+ $ Id            : num [1:67] 1.50e+09 1.50e+09 1.93e+09 2.87e+09 2.87e+09 ...
+ $ Date          : chr [1:67] "5/2/2016 11:59:59 PM" "5/3/2016 11:59:59 PM" "4/13/2016 1:08:52 AM" "4/21/2016 11:59:59 PM" ...
+ $ WeightKg      : num [1:67] 52.6 52.6 133.5 56.7 57.3 ...
+ $ WeightPounds  : num [1:67] 116 116 294 125 126 ...
+ $ Fat           : num [1:67] 22 NA NA NA NA 25 NA NA NA NA ...
+ $ BMI           : num [1:67] 22.6 22.6 47.5 21.5 21.7 ...
+ $ IsManualReport: logi [1:67] TRUE TRUE FALSE TRUE TRUE TRUE ...
+ $ LogId         : num [1:67] 1.46e+12 1.46e+12 1.46e+12 1.46e+12 1.46e+12 ...
+ - attr(*, "spec")=
+  .. cols(
+  ..   Id = col_double(),
+  ..   Date = col_character(),
+  ..   WeightKg = col_double(),
+  ..   WeightPounds = col_double(),
+  ..   Fat = col_double(),
+  ..   BMI = col_double(),
+  ..   IsManualReport = col_logical(),
+  ..   LogId = col_double()
+  .. )
+ - attr(*, "problems")=<externalptr> 
+ 
+ ### Checking the number of Distinct User Data given by each dataset
+ > n_distinct(daily_activity$Id)
+[1] 33
+
+> n_distinct(daily_calories$Id)
+[1] 33
+
+> n_distinct(daily_intensities$Id)
+[1] 33
+
+> n_distinct(daily_steps$Id)
+[1] 33
+
+> n_distinct(heart_rate$Id)
+[1] 14
+
+> n_distinct(hourly_calories$Id)
+[1] 33
+
+> n_distinct(hourly_intensities$Id)
+[1] 33
+
+> n_distinct(hourly_steps$Id)
+[1] 33
+
+> n_distinct(minute_intensities_narrow$Id)
+[1] 33
+
+> n_distinct(minute_intensities_wide$Id)
+[1] 33
+
+> n_distinct(minute_mets_narrow$Id)
+[1] 33
+
+> n_distinct(minute_sleep$Id)
+[1] 24
+
+> n_distinct(minute_steps_narrow$Id)
+[1] 33
+
+> n_distinct(minute_steps_wide$Id)
+[1] 33
+
+> n_distinct(sleep_day$Id)
+[1] 24
+
+> n_distinct(weight_loginfo$Id)
+[1] 8
+
+#### Since some data such as Weight Info and Heart Rate have less users, they may be less representative of the general population of Fitbit Users
+
+### Counting the number of unique day entries by each Id
+> daily_activity %>%
++   group_by (Id) %>%
++   summarize (count = length(ActivityDate))
+# A tibble: 33 × 2
+           Id count
+        <dbl> <int>
+ 1 1503960366    31
+ 2 1624580081    31
+ 3 1644430081    30
+ 4 1844505072    31
+ 5 1927972279    31
+ 6 2022484408    31
+ 7 2026352035    31
+ 8 2320127002    31
+ 9 2347167796    18
+10 2873212765    31
+# … with 23 more rows
+
+#### This shows that the amount of days of data provided by each user is different, hence for any comparisons the average should be taken instead of sum
+
+### Obtaining some general averages of the Fitbit Users (I made sure to filter out entries where = 0 as it is likely that the user did not wear the Fitbit for that day)
+> daily_activity %>%
++   filter(TotalSteps > 0) %>%
++   select(TotalSteps) %>%
++   summary()
+   TotalSteps   
+ Min.   :    4  
+ 1st Qu.: 4923  
+ Median : 8053  
+ Mean   : 8319  
+ 3rd Qu.:11092  
+ Max.   :36019  
+
+#### A study published in 2010 of over 1,000 Americans found that participants averaged 5,117 steps per day. This shows that on average Fitbit Users are logging much more daily steps.
+#### Recommended is at least 10,000 steps a day
+#### Bassett DR, Wyatt HR, Thompson H, Peters JC, Hill JO. Pedometer-measured physical activity and health behaviors in U.S. adults. Med Sci Sports Exerc. 2010;42(10):1819-25. doi:10.1249/MSS.0b013e3181dc2e54
+
+> sleep_day %>%
++   filter(TotalMinutesAsleep > 0) %>%
++   select(TotalMinutesAsleep) %>%
++   summary()
+ TotalMinutesAsleep
+ Min.   : 58.0     
+ 1st Qu.:361.0     
+ Median :433.0     
+ Mean   :419.5     
+ 3rd Qu.:490.0     
+ Max.   :796.0 
+
+#### This shows that the average Fitbit user in the data recorded 7 hours of sleep a day. This is comparable to the recommended 7 hours of sleep required by adults.
+
+> daily_activity %>%
++   select(VeryActiveMinutes) %>%
++   summary()
+ VeryActiveMinutes
+ Min.   :  0.00   
+ 1st Qu.:  0.00   
+ Median :  4.00   
+ Mean   : 21.16   
+ 3rd Qu.: 32.00   
+ Max.   :210.00   
+ 
+ #### This shows that the average Fitbit user in the data recorded 21 minutes of vigourous activity. This is exceeding with the recommmended 75 minutes of vigourous exercise a week.
+ However, looking at the median 4 minutes of vigorous activity a day, this shows that at least half of the users have 4 or less minutes of vigorous activity a day, which is relatively low
+ as compared to the mean. 
+
+
+
+
+
  
