@@ -843,6 +843,17 @@ sleep_day %>%
   labs(title="Comparing Time Asleep with Time on Bed", 
        x="Time Asleep (Minutes)", y="Time Spent on Bed (Minutes)")
        
-#### Between BMI and Daily Steps
+#### Between BMI and Daily Steps (Need to merge the daily_activity and weight_loginfo)
 
+summary <- daily_activity_weight %>%
+  filter(TotalSteps > 0) %>%
+  group_by (Id) %>%
+  summarize(mean_steps=mean(TotalSteps), mean_BMI = mean(BMI))
+
+summary %>%
+  ggplot(aes(x=mean_steps, y=mean_BMI)) + 
+  geom_point(position = position_jitter(), color = "red") +
+  stat_smooth(method = "lm") + 
+  labs(title="Comparing Daily Steps with BMI", 
+       x="Daily Steps", y="BMI")
  
