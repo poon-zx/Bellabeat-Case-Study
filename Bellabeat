@@ -756,7 +756,7 @@ spec_tbl_df [67 × 8] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
 
 #### This shows that the amount of days of data provided by each user is different, hence for any comparisons the average should be taken instead of sum
 
-### Obtaining some general averages of the Fitbit Users (I made sure to filter out entries where = 0 as it is likely that the user did not wear the Fitbit for that day)
+
 > daily_activity %>%
 +   filter(TotalSteps > 0) %>%
 +   select(TotalSteps) %>%
@@ -769,11 +769,6 @@ spec_tbl_df [67 × 8] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
  3rd Qu.:11092  
  Max.   :36019  
 
-#### A study published in 2010 of over 1,000 Americans found that participants averaged 5,117 steps per day. This shows that on average Fitbit Users are logging much more daily steps.
-#### Recommended is at least 10,000 steps a day
-#### Bassett DR, Wyatt HR, Thompson H, Peters JC, Hill JO. Pedometer-measured physical activity and health behaviors in U.S. adults. Med Sci Sports Exerc. 2010;42(10):1819-25. doi:10.1249/MSS.0b013e3181dc2e54
-
-#### To plot this on a histogram instead. 
 daily_activity %>%
   filter(TotalSteps > 0) %>%
   ggplot(aes(x=TotalSteps)) + 
@@ -795,9 +790,6 @@ daily_activity %>%
  3rd Qu.:490.0     
  Max.   :796.0 
 
-#### This shows that the average Fitbit user in the data recorded 7 hours of sleep a day. This is comparable to the recommended 7 hours of sleep required by adults.
-#### Same as above, plotting this on a histogram. 
-
 sleep_day %>%
   filter(TotalMinutesAsleep > 0) %>%
   ggplot(aes(x=TotalMinutesAsleep)) + 
@@ -818,9 +810,6 @@ sleep_day %>%
  3rd Qu.: 32.00   
  Max.   :210.00   
  
- #### This shows that the average Fitbit user in the data recorded 21 minutes of vigourous activity. This is exceeding with the recommmended 75 minutes of vigourous exercise a week.
- However, looking at the median 4 minutes of vigorous activity a day, this shows that at least half of the users have 4 or less minutes of vigorous activity a day, which is relatively low
- as compared to the mean. 
  
  ### Comparing Data
  #### Between Daily Steps and Daily Sedentary Minutes
@@ -844,6 +833,8 @@ sleep_day %>%
        x="Time Asleep (Minutes)", y="Time Spent on Bed (Minutes)")
        
 #### Between BMI and Daily Steps (Need to merge the daily_activity and weight_loginfo)
+
+daily_activity_weight <- merge(daily_activity, weight_loginfo, by="Id")
 
 summary <- daily_activity_weight %>%
   filter(TotalSteps > 0) %>%
